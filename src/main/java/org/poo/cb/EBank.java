@@ -116,7 +116,7 @@ public class EBank {
         try (BufferedReader reader = new BufferedReader(new FileReader(stockPath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Stock")) {
+                if (line.startsWith("Stock") || line.startsWith(",")) {
                     continue;
                 }
                 String[] values = line.split(",");
