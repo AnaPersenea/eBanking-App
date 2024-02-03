@@ -2,6 +2,8 @@ package org.poo.cb;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -14,6 +16,7 @@ public class Main {
         String readPath  = "src/main/resources/" + testName;
         File in = new File(readPath);
         EBank eBank = new EBank();
+        List<String> recommendedStocks = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(in)) {
             while (scanner.hasNextLine()) {
@@ -60,19 +63,23 @@ public class Main {
 
                 if (command.equals("RECOMMEND STOCKS")) {
                     String stockPath  = "src/main/resources/" + args[1];
-                    eBank.recommendStocks(stockPath);
+                    recommendedStocks = eBank.recommendStocks(stockPath);
+                    eBank.printRecommendedStocks(stockPath);
                 }
 
                 if (command.equals("BUY STOCKS")) {
                     String stockPath  = "src/main/resources/" + args[1];
                     int stock = Integer.parseInt(fullCommand[4]);
                     Double stockBalance = (double) stock;
-                    eBank.buyStock(stockPath, fullCommand[2], fullCommand[3], stockBalance);
+                    eBank.buyStock(stockPath, fullCommand[2], fullCommand[3], stockBalance, recommendedStocks);
+                }
+
+                if (command.equals("BUY PREMIUM")) {
+                    eBank.buyPremium(fullCommand[2]);
                 }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        eBank.cleanUserDataBase();
     }
 }

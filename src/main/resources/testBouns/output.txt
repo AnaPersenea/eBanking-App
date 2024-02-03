@@ -1,0 +1,9 @@
+{"email":"john.doe@email.com","firstname":"John","lastname":"Doe","address":"1401 Stoltenberg Islands Geralynstad SD 36945","friends":[]}
+{"stocks":[],"accounts":[{"currencyname":"usd","amount":"1000.00"},{"currencyname":"eur","amount":"0.00"}]}
+{"stocks":[],"accounts":[{"currencyname":"usd","amount":"437.93"},{"currencyname":"eur","amount":"350.00"}]}
+{"stocks":[],"accounts":[{"currencyname":"usd","amount":"337.93"},{"currencyname":"eur","amount":"350.00"}]}
+{"stocks":[],"accounts":[{"currencyname":"usd","amount":"163.03"},{"currencyname":"eur","amount":"460.00"}]}
+{"stocks":[],"accounts":[{"currencyname":"usd","amount":"1003.04"},{"currencyname":"eur","amount":"460.00"}]}
+{"stocks":[{"stockname":"amzn","amount":4}],"accounts":[{"currencyname":"usd","amount":"390.00"},{"currencyname":"eur","amount":"460.00"}]}
+{"stocksToBuy":["KO","JPM","AMZN"]}
+{"stocks":[{"stockname":"amzn","amount":4},{"stockname":"ko","amount":5}],"accounts":[{"currencyname":"usd","amount":"105.97"},{"currencyname":"eur","amount":"460.00"}]}

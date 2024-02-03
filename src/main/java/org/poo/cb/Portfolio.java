@@ -15,7 +15,11 @@ public class Portfolio implements PortfolioComponent {
 
     @Override
     public Double getBalance() {
-        return 0.00;
+        Double totalBalance = 0.0;
+        for (PortfolioComponent component : components) {
+            totalBalance += component.getBalance();
+        }
+        return totalBalance;
     }
 
     @Override

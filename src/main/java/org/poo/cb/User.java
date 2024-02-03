@@ -10,7 +10,8 @@ public class User {
     private final String address;
     private final Portfolio userPortfolio;
     private final List<String> friends;
-    Exchange exchangeRates = Exchange.Instance();
+    private Integer premiumUser;
+
 
     public User(String email, String firstName, String lastName, String address) {
         this.email = email;
@@ -19,6 +20,7 @@ public class User {
         this.address = address;
         this.friends = new ArrayList<>();
         this.userPortfolio = new Portfolio();
+        this.premiumUser = 0;
     }
 
     public String getEmail() {
@@ -58,7 +60,7 @@ public class User {
         account.increaseBalance(currencyBalance);
     }
 
-    public void exchange(String fromCurrency, String toCurrency, Double amount) {
+    public void exchange(Exchange exchangeRates, String fromCurrency, String toCurrency, Double amount) {
         Account fromAccount = alreadyExistsAccount(fromCurrency);
         Account toAccount = alreadyExistsAccount(toCurrency);
 
@@ -69,7 +71,7 @@ public class User {
                 System.out.println("Insufficient amount in account " + fromCurrency + " for exchange");
                 return;
             }
-            if (fromAccount.getBalance() / 2 < amount * rate) {
+            if (fromAccount.getBalance() / 2 < amount * rate && premiumUser == 0) {
                 fromAccount.decreaseBalance(amount * rate / 100);
             }
             fromAccount.decreaseBalance(amount * rate);
@@ -85,7 +87,7 @@ public class User {
         toAccount.increaseBalance(amount);
     }
 
-    public void buy(String stockPath, String stockName, Double amount) {
+    public void buy(String stockPath, String stockName, Double amount, List<String> recommendedStocks) {
         Account account = alreadyExistsAccount("USD");
         Stock stock = new Stock(stockName, amount);
         Double stockValue = stock.getStockValue(stockPath, stockName);
@@ -94,8 +96,23 @@ public class User {
                 System.out.println("Insufficient amount in account for buying stock");
                 return;
             }
-            account.decreaseBalance(amount * stockValue);
+            String checkStockName = "\"" + stockName + "\"";
+            if (premiumUser == 1 && recommendedStocks.contains(checkStockName)) {
+                account.decreaseBalance(amount * stockValue * 0.95);
+            } else {
+                account.decreaseBalance(amount * stockValue);
+            }
             userPortfolio.addComponent(stock);
+        }
+    }
+
+    public void buyP() {
+        Account account = alreadyExistsAccount("USD");
+        if (account.getBalance() < 100.00) {
+            System.out.println("Insufficient amount in account for buying premium option");
+        } else {
+            account.decreaseBalance(100.00);
+            premiumUser = 1;
         }
     }
 

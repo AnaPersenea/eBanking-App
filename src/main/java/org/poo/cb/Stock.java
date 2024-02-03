@@ -7,11 +7,12 @@ import java.io.IOException;
 public class Stock implements PortfolioComponent {
     String stockName;
     Double stockBalance;
+    Integer wasRecommended;
     public Stock(String stockName, Double stockBalance) {
         this.stockName = stockName;
         this.stockBalance = stockBalance;
+        this.wasRecommended = 0;
     }
-
     @Override
     public Double getBalance() {
         return stockBalance;

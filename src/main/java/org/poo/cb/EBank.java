@@ -8,6 +8,8 @@ import java.util.List;
 
 public class EBank {
     private final List<User> users = new ArrayList<>();
+    Exchange exchangeRates = Exchange.Instance();
+
 
     public User getUser(String[] fullCommand) {
         String email = fullCommand[2];
@@ -90,7 +92,7 @@ public class EBank {
     public void exchangeMoney(String email, String fromCurrency, String toCurrency, Double amount) {
         User user = searchUserByEmail(email);
         if (user != null) {
-            user.exchange(fromCurrency, toCurrency, amount);
+            user.exchange(exchangeRates, fromCurrency, toCurrency, amount);
         }
     }
 
@@ -110,9 +112,8 @@ public class EBank {
         }
     }
 
-    public void recommendStocks(String stockPath) {
-        StringBuilder stringBuilder = new StringBuilder("{\"stockstobuy\":[");
-        boolean firstStock = true;
+    public List<String> recommendStocks(String stockPath) {
+        List<String> recommendedStocks = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(stockPath))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -129,28 +130,43 @@ public class EBank {
                 Recommendation recommendation = new Recommendation(stockValues, stockName, new SMA());
                 String stock = recommendation.makeRecommendation();
                 if (stock != null) {
-                    if (!firstStock) {
-                        stringBuilder.append(",");
-                    }
-                    stringBuilder.append(stock);
-                    firstStock = false;
+                    recommendedStocks.add(stock);
                 }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        return recommendedStocks;
+    }
+
+    public void printRecommendedStocks(String stockPath) {
+        List<String> recommendedStocks = recommendStocks(stockPath);
+        StringBuilder stringBuilder = new StringBuilder("{\"stockstobuy\":[");
+        boolean firstStock = true;
+        for (String stock : recommendedStocks) {
+            if (!firstStock) {
+                stringBuilder.append(",");
+            }
+            stringBuilder.append(stock);
+            firstStock = false;
+        }
         stringBuilder.append("]}");
         System.out.println(stringBuilder);
     }
 
-    public void buyStock(String stockPath, String email, String stockName, Double stockValue) {
+    public void buyStock(String stockPath, String email, String stockName, Double stockValue, List<String> recommendedStocks) {
         User user = searchUserByEmail(email);
         if (user != null) {
-            user.buy(stockPath, stockName, stockValue);
+            user.buy(stockPath, stockName, stockValue, recommendedStocks);
         }
     }
 
-    public void cleanUserDataBase() {
-        users.clear();
+    public void buyPremium(String email) {
+        User user = searchUserByEmail(email);
+        if (user != null) {
+            user.buyP();
+        } else {
+            System.out.println("User with " + email + " doesn't exist");
+        }
     }
 }

@@ -12,7 +12,6 @@ abstract class Account implements PortfolioComponent{
     public Double getBalance() {
         return currencyBalance;
     }
-
     public void increaseBalance(Double amount) {
         currencyBalance += amount;
     }

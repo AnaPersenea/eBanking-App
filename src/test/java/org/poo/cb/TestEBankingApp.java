@@ -149,6 +149,20 @@ public class TestEBankingApp {
         System.setOut(System.out);
     }
 
+    @Test
+    public void testBonus() throws IOException {
+        ByteArrayOutputStream outPrintStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outPrintStream));
+        String commandFolder = "testBouns/";
+
+        Main.main(getInputArgs(commandFolder));
+        String output = outPrintStream.toString();
+
+        assertJsonLineAreEqual(output, commandFolder);
+
+        System.setOut(System.out);
+    }
+
     private void assertJsonLineAreEqual(String actualOutput, String inputFolder)
             throws IOException {
 
